@@ -82,8 +82,7 @@ for deltav in velocity_dispersions:
     #put legend outside the plot
         leg = ax1.legend(bbox_to_anchor=(1,1), prop={'size': 7.5}, bbox_transform=plt.gcf().transFigure) 
     #save figure
-        plt.savefig('energydeltacstat_%i.pdf' %deltav,bbox_inches='tight')
-#clean up memory        
+        plt.savefig('energydeltacstat_%i.pdf' %deltav,bbox_inches='tight')       
 
     else:
         print "No cstat scan line files were found for velocity dispersion: %i" %deltav
