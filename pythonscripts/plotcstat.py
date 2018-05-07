@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+
 #line colors; add more if needed
 colors=['b','olivedrab','r','magenta','deepskyblue','orange']
 
@@ -35,7 +36,7 @@ for deltav in velocity_dispersions:
     colorindex=0
 #traverse each directory
     for directory in dirnames:
-        filepath=directory+'/cstatlinescan_%i.dat' %deltav
+        filepath=directory+'/linescan/cstatlinescan_%i.dat' %deltav
 #find each output file from a cstat line scan
         if os.path.isfile(filepath):
             with open(filepath) as f:
@@ -46,13 +47,14 @@ for deltav in velocity_dispersions:
                 expression= (line for line in lines if not line.startswith("\n"))
                 y = []
                 wavelength = []
+                
                 for line in expression:
                     delta=float(line.split("\t")[2])
                     #skip negative delta C
                     if delta<0.0:
                         continue
                     energy =float(line.split("\t")[3])
-                    wavelength.append( 10**7*h*c/energy)
+                    wavelength.append(10**7*h*c/energy)
                 #x = [float(line.split("\t")[3]) for line in lines]
                 #norm of the line
                     norm=float(line.split("\t")[4])
@@ -65,6 +67,7 @@ for deltav in velocity_dispersions:
                         y.append(-float(delta))
     #get a difference color for each line
                 ax1.plot(wavelength,y, c=colors[colorindex], label=directory)
+                ax1.scatter(wavelength,y, c=colors[colorindex], label=directory)
                 colorindex=colorindex+1
       
         else:
@@ -74,11 +77,19 @@ for deltav in velocity_dispersions:
 #check if any file was found, that is if x is empty or not
     if wavelength:
     #horizontal line    
-        horizontal_line= np.array([0 for i in xrange(len(wavelength))])
+       
         plt.axhline(y=0, color='black') 
+        plt.axhline(y=10, color='gray',linestyle='--')
+        plt.axhline(y=-10, color='gray',linestyle='--')
         ax1.set_xticks(np.arange(8.0,25, 1.0))
         ax1.set_xlim(8.0,25)
-        ax2.set_xlim(1.5,0.5)
+        
+        
+        xticks = ax1.get_xticks()
+        x2labels = ['{:01.2f}'.format(w) for w in 10**7*h*c/xticks]
+        ax2.set_xticks(xticks)
+        ax2.set_xticklabels(x2labels)
+        ax2.set_xlim(ax1.get_xlim())
     #put legend outside the plot
         leg = ax1.legend(bbox_to_anchor=(1,1), prop={'size': 7.5}, bbox_transform=plt.gcf().transFigure) 
     #save figure
