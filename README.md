@@ -1,5 +1,5 @@
 # Python-Line-Significance-Scripts
-Scripts to identify and asses emission lines
+Scripts to identify and asses the significance of faint emission lines
 author: Andres Gurpide Lasheras; andres.gurpide@gmail.com
 
 
